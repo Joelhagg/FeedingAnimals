@@ -1,0 +1,10 @@
+.animalInfo {
+  text-align: center;
+}
+
+.longDescConatiner {
+  display: flex;
+  justify-content: center;
+  padding-right: 20%;
+  padding-left: 20%;
+}
