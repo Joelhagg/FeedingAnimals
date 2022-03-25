@@ -1,25 +1,26 @@
 import React, {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import axios from "axios"
-import { IAnimals } from '../../models/IAnimal'
+import { IAnimal } from '../../models/IAnimal'
 import './Main.css'
+
 
 const Main = () => {
     
-    const [animalsFromApi, setAnimalsFromApi] = useState<IAnimals[]>([])
-    let animalsFed:any = []
+    const [animalsFromApi, setAnimalsFromApi] = useState<IAnimal[]>([])
  
     const getAnimalData = async () => {
         
-        const response = await axios.get<IAnimals[]>('https://animals.azurewebsites.net/api/animals')
+        const response = await axios.get<IAnimal[]>('https://animals.azurewebsites.net/api/animals')
         let listOfAnimalsFromApi = response.data
 
         saveLocalStorage(listOfAnimalsFromApi)
         setAnimalsFromApi(listOfAnimalsFromApi)
-    }
+    } 
     
     useEffect(()=> {
         fetchLocalStorage()
+        checkForHungryAnimal()
     },[])
     
     const fetchLocalStorage = () => {
@@ -33,24 +34,19 @@ const Main = () => {
         }
     }
 
-    useEffect(() => {
-        checkForHungryAnimal()
-    },[])
-
-
     const checkForHungryAnimal = () => {
         const myLocalData = localStorage.getItem('animal')
 
         if(!myLocalData) {     
         } else {
             const animalData = JSON.parse(myLocalData)   
-
-                animalData.find((data: any) => {
-                                
-                    if (data.isFed == true) {
+            
+                animalData.find((data: any) => {   
+                          
+                    if (data.isFed == true) {                        
                          
-                        let lastFedTime = Date.parse(data.lastFed)
-
+                        let lastFedTime = Date.parse(data.lastFed)                       
+                        
                         let timeNow = new Date().getTime()
 
                         let timeSinceFed = timeNow - lastFedTime
@@ -66,7 +62,7 @@ const Main = () => {
         }
     }
 
-    const saveLocalStorage = (data: IAnimals[]) => {       
+    const saveLocalStorage = (data: IAnimal[]) => {       
         
         if(data.length >= 0) {
             localStorage.setItem('animal', JSON.stringify(data))   
@@ -84,12 +80,13 @@ const Main = () => {
             </div>
             <div className='animalWraper'>
             {animalsFromApi.map(animal => {
+                
             return (                        
                 <div className='animalContainer' key={animal.id}>
                     <h2> {animal.name} </h2>
                     <img src={animal.imageUrl}></img> 
                     <p> {animal.shortDescription} </p>
-                        <Link  to={`/about/${animal.id}`} >
+                        <Link  to={`/animal/${animal.id}`} >
                             <button type="button">
                                 Mata och lär känna {animal.name}!
                             </button>

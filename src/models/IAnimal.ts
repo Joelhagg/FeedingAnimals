@@ -1,5 +1,5 @@
-export interface IAnimals {
-    id: number,
+export interface IAnimal {
+    id?: number,
     name: string,
     latinName: string,
     yearOfBirth: string,
@@ -8,7 +8,5 @@ export interface IAnimals {
     imageUrl: string,
     medicine: string,
     isFed?: boolean,
-    lastFed?: Date
-    // lastFedMs?: number,
-    // nextMeal?: number
+    lastFed?: Date 
 }
